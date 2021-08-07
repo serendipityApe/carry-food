@@ -1,0 +1,27 @@
+.login{
+    text-align: center;
+    background-color: white;
+    height: 100%;
+    
+    .content{
+        padding: 2rem 0;
+        max-width: 75%;
+        margin: 0 auto;
+        .am-list-item.am-input-item{
+            padding-left: 0;
+        }
+        .btn{
+            margin-top: 4rem;
+        }
+        
+    }
+    .footer{
+        text-align: center;
+        position: absolute;
+        bottom: 2rem;
+        width: 100vw;
+        .changeType{
+            color: #009cfa;
+        }
+    }
+}
