@@ -1,5 +1,9 @@
-import React, { Component } from 'react'
-import {Button, InputItem, Toast} from 'antd-mobile'
+import { Component } from 'react'
+import {Toast} from 'antd-mobile'
+import qs from 'querystring'
+import LoginPs from 'containers/LoginPs'
+import LoginPhone from './phone'
+
 import './index.scss'
 import Bg from '../../components/Login/Login_bg'
 
@@ -11,7 +15,7 @@ export default class index extends Component<any,State> {
     state = {
         hasError: false,
         value: '',
-      }
+    }
     onErrorClick = () => {
     if (this.state.hasError) {
         Toast.info('请输入正确格式');
@@ -32,22 +36,24 @@ export default class index extends Component<any,State> {
     });
     }
     render() {
-        return (
-            <div className="login">
-                <Bg></Bg>
-                <div className="content">
-                    <InputItem
-                        type="phone"
-                        placeholder="请输入手机号"
-                        error={this.state.hasError}
-                        onErrorClick={this.onErrorClick}
-                        onChange={this.onChange}
-                        value={this.state.value}
-                    ></InputItem>
-                    <Button className="btn" type="primary" >下一步</Button>
+        console.log(this.props)
+        const {search} = this.props.location;
+        const {type} = qs.parse(search.slice(1));
+        if(type === '0'){
+            return (
+                <div className="login">
+                    <Bg></Bg>
+                    <LoginPhone />
                 </div>
-                    <div className="footer"><a className="changeType" href="">使用账号密码登录</a></div>
-            </div>
-        )
+            )
+        }else{
+            return (
+                <div className="login">
+                    <Bg></Bg>
+                    <LoginPs />
+                </div>
+            )
+        }
+        
     }
 }

@@ -4,17 +4,24 @@ import {BrowserRouter,Switch,Route,Redirect} from 'react-router-dom'
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import store from './redux/store'
+import {store,persistor} from './redux/store'
 import {Provider} from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
 import {mainRouter} from './router'
 ReactDOM.render(
     <BrowserRouter>
       <Switch>
-        <Route path="/index" render={renderProps => <Provider store={store}><App {...renderProps}/></Provider>}/>
-        {mainRouter.map((route) => {
-          return <Route key={route.path} {...route} />
-        })}
+        <Route path="/" render={(renderProps:any) => 
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <App {...renderProps}/> 
+          </PersistGate>
+        </Provider>}/>
+
+        {/* {mainRouter.map((route) => {
+          return <Route key={route.path} exact={route.exact} path={route.path} render={(renderProps) => {return <Provider store={store}><route.component {...renderProps}/></Provider>}}/>
+        })} */}
         <Redirect to="/404" />
       </Switch>
     </BrowserRouter>,

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import axios from 'axios'
 
 //引入action
@@ -43,11 +43,6 @@ class Location extends Component<Props,State> {
                 adcode:result.addressComponent.abcode
             }
             this.props.set_ip(ipMsg);
-            /* this.locationMsg=result.formattedAddress;
-            this.position.Q=result.position.Q;
-            this.position.R=result.position.R
-            this.position.adcode=result.addressComponent.abcode;
-            this.$emit('location', ''+this.position.R+','+this.position.Q+'')   //向父组件传递当前坐标 */
         });
          //eslint-disable-next-line
         AMap.event.addListener(geolocation, 'error', (err?:any)=>{
@@ -59,12 +54,6 @@ class Location extends Component<Props,State> {
             }
             this.props.set_ip(ipMsg);
             this.setState({amap:false})
-            /* console.log('定位错误')
-            this.$toast('定位失败，请手动选择位置')
-            setTimeout(()=>{
-
-                this.show=true;
-            },2000) */
         });
     }
     //手动选择定位
@@ -92,7 +81,7 @@ class Location extends Component<Props,State> {
         this.props.set_ip(ipMsg);
     }
     render() {
-        console.log(this.props)
+        // console.log(this.props)
         return (
             <div className="location" onClick={this.props.onClick}>
                 {this.props.local}
@@ -104,7 +93,6 @@ class Location extends Component<Props,State> {
 //使用connect()()创建并暴露一个Location的容器组件
 export default connect(
 	(state:StoreState) => {
-        console.log(state)
         return {
             ip: state.location.ip,
             local: state.location.local,

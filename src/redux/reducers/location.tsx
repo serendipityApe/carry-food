@@ -7,7 +7,7 @@ import {StoreLocation} from '../../types'
 import {All} from '../actions/location'
 
 const initState:StoreLocation = {ip:'',local:'定位中...',adcode:''} //初始化状态
-export default function countReducer(preState:StoreLocation=initState,action:All):StoreLocation{
+export default function ipReducer(preState:StoreLocation=initState,action:All):StoreLocation{
 	// console.log('countReducer@#@#@#');
 	//从action对象中获取：type、data
 	const {type,data} = action

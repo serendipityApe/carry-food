@@ -1,17 +1,19 @@
 import './App.css';
-import {appRouter} from './router'
+import {appRouter,mainRouter} from './router'
 import {Route,BrowserRouter,Switch} from 'react-router-dom'
 
 
-import Header from './components/Header/Header'
+
 function App() {
   return (
     <div className="App">
-      <Header/>
       <BrowserRouter>   
       <Switch>
       {appRouter.map((r) => {
-        return <Route key={r.path} exact={r.exact} path={r.path} render={routerProps => {return <r.component {...routerProps}/>}}/>
+        return <Route key={r.path} exact={r.exact} path={r.path} render={routerProps => {console.log(routerProps);return <r.component routers={r.routers} {...routerProps}/>}}/>
+      })}
+      {mainRouter.map((r) => {
+        return <Route key={r.path} exact={r.exact} path={r.path} render={routerProps => {console.log(routerProps);return <r.component routers={r.routers} {...routerProps}/>}}/>
       })}
       </Switch>
       </BrowserRouter>
