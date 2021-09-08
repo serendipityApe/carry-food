@@ -6,9 +6,11 @@ import {combineReducers} from 'redux'
 //引入为location组件服务的reducer
 import location from './location'
 import user from './user'
+import random from './random'
 
 //汇总所有的reducer变为一个总的reducer
 export default combineReducers({
 	location,
-	user
+	user,
+	random
 })

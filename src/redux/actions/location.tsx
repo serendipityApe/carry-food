@@ -10,4 +10,4 @@ export interface SET_IP {
 export type All = SET_IP
 
 //同步action，就是指action的值为Object类型的一般对象
-export const set_ip = (data:object) => ({type:constants.SET_IP,data})
+export const set_ip = (data:StoreLocation) => ({type:constants.SET_IP,data})

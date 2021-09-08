@@ -4,6 +4,7 @@ import Login_ps from '../pages/Login/ps'
 import PageNotFound from '../pages/pageNotFound'
 import Index from '../pages/Index'
 import Map from '../pages/Map'
+import ShareMap from '../pages/ShareMap'
 type Router ={
     path:string,
     component:any,
@@ -22,6 +23,10 @@ export const mainRouter:Router = [
     {
         path:'/map',
         component: Map
+    },
+    {
+        path: '/sharemap',
+        component: ShareMap
     }
     
 ]

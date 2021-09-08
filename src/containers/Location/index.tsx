@@ -39,7 +39,7 @@ class Location extends Component<Props,State> {
             console.log(result)
             let ipMsg={
                 ip:`${result.position.lng},${result.position.lat}`,
-                local:result.addressComponent.city,
+                local: result.addressComponent.city ? result.addressComponent.city : "",
                 adcode:result.addressComponent.abcode
             }
             this.props.set_ip(ipMsg);

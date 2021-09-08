@@ -1,0 +1,32 @@
+.footer{
+    position: absolute;
+    bottom: 0;
+    background-color: white;
+    min-height: 5rem;
+    width: 100%;
+    .content{
+        padding: 20px;
+        .targetMsg{
+            .left{
+                float: left;
+                width: 80%;
+                .name{
+                    font-size: 18px;
+                    font-weight: 500;
+                    margin-bottom: .5rem;
+                }
+            }
+            .right{
+                float: left;
+                width: 20%;
+            }
+        }
+        .targetMsg::after{
+            content: "";
+            clear: both;
+            display: block;
+            height: 0;
+            visibility: hidden;
+        }
+    }
+}

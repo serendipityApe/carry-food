@@ -6,3 +6,9 @@ export type SET_IP_t = typeof SET_IP;
 
 export const SET_USER = 'set_user';
 export type SET_USER_t = typeof SET_USER;
+
+export const REDUCER = 'reducer';
+export type REDUCER_t = typeof REDUCER;
+
+export const SET_TARGET = 'set_target';
+export type SET_TARGET_t = typeof SET_TARGET;
