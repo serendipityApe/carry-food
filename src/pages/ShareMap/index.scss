@@ -1,3 +1,146 @@
 .amap-icon img{
     width: 35px;
 }
+
+.infoWindow{
+    .targetName{
+        font-size: 16px;
+    }
+    .targetMore{
+        display: flex;
+        height: 80px;
+        font-size: 14px;
+        .targetPhoto{
+            width: 80px;
+            height: 60px;
+            img{
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .targetLocation{
+            padding-left: 5px;
+            margin-top: 15px;
+        }
+    }
+}
+
+.footer{
+    z-index: 999;
+    position: absolute;
+    bottom: 0;
+    min-height: 3rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    &.expend{
+        height: 100%;
+        background-color: #F6F7F9;
+    }
+    .infoFooter{
+        min-height: 5rem;
+        width: 96%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        .icon-Arrow-Left2{
+            position: absolute;
+            top: .8rem;
+            left: .8rem;
+            font-size: 1rem;
+        }
+        .content{
+            overflow: hidden;
+            border-radius: 1rem 1rem 0 0;
+            padding: .8rem;
+            position: relative;
+            background-color: white;
+            &.outline{
+                .icon-chahao{
+                    position: absolute;
+                    right: .8rem;
+                    top: .8rem;
+                }
+                .targetName{
+                    font-size: 16px;
+                    font-weight: 600;
+                }
+                .targetMore{
+                    .targetLocation{
+                        overflow:hidden;
+                        white-space:nowrap;
+                        text-overflow:ellipsis;
+                    }
+                }  
+            }
+            &.comment{
+                .header{
+                    display: flex;
+                    justify-content: space-between;
+                    line-height: 2rem;
+                    height: 2rem;
+                    .targetTitle{
+                        font-size: 1rem;
+                        font-weight: bold;
+                    }
+                    .targetEdit{
+                        font-size: 1rem;
+                    }
+                }
+                .targetMore{
+                    padding: .8rem;
+                    .commentItem{
+                        margin-bottom: 1rem;
+                        .userMsg{
+                            display: flex;
+                            align-items: center;
+                            .avatar{
+                                overflow: hidden;
+                                width: 2rem;
+                                height: 2rem;
+                                border-radius: 50%;
+                                margin-right: .5rem;
+                                img{
+                                    width: 100%;
+                                    height: 100%;
+                                }
+                            }
+                        }
+                        .commentMsg{
+                            .describe{
+                                padding: 1.5rem 0;
+                            }
+                            .more{
+                                .time{
+                                    color: grey;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .item{
+            overflow: hidden;
+            border-radius: 1rem;
+            padding: .8rem;
+            position: relative;
+            background-color: white;
+            margin-bottom: 1rem;
+            &.detailed{
+                margin-top: 2rem;
+                .targetPhotos{
+                    height: 3rem;
+                }     
+             }
+        }
+    }
+    .bottom{
+        background-color: #F6F7F9;
+        height: 3rem;
+        width: 100%;
+        border-top: solid 1px #E8EAEB;
+    }
+}

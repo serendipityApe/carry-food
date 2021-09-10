@@ -38,7 +38,7 @@ export default function Footer(props: any) {
         slideEvent()
     },[])
     return (
-        <div className="footer" ref={footer}>
+        <div className="componentFooter" ref={footer}>
             <div className="content">
                 <div className="targetMsg">
                     <div className="left">

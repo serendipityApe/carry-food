@@ -54,7 +54,7 @@ function Address(props: any) {
         <Marker position={center} render={Avatar}></Marker>
         <ToSelf ToSelf={toSelf} />
       </Map>
-	  <Footer history={props.history}/>
+	    <Footer history={props.history}/>
     </div>
   )
 }
