@@ -10,8 +10,18 @@ interface Ip {
     longitude: number,
     latitude: number
 }
+interface MyTarget {
+    name: string,
+    location: string,
+    type: "default" | "click" | "expanded",
+    comments:{
+        userId:string,
+        comment:string,
+        createTime:string
+    }[]
+}
 function Address(props: any) {
-    const [myTarget, setMyTarget] = useState({name: "", location: ""});
+    const [myTarget, setMyTarget] = useState<MyTarget>({ name: "", location: "", type: "default",comments: [] });
     const infoFooter = useRef<HTMLDivElement>(null);
     const footer = useRef<HTMLDivElement>(null);
     let targetPosition: Ip = {
@@ -19,8 +29,10 @@ function Address(props: any) {
         latitude: 35.28299
     };
     let InitCenter: Ip = {
-        longitude: Number(store.getState().location.ip.split(",")[0]),
-        latitude: Number(store.getState().location.ip.split(",")[1])
+        // longitude: Number(store.getState().location.ip.split(",")[0]),
+        // latitude: Number(store.getState().location.ip.split(",")[1])
+        longitude: 113.88176,
+        latitude: 35.28299
     }
     const [center, setCenter] = useState(InitCenter);
     const plugins: any = [
@@ -123,75 +135,10 @@ function Address(props: any) {
                 if (e.target.className.indexOf("icon-chahao") !== -1) {
                     console.log("关闭")
                 } else {
-                    footer.current!.className="footer expend"
-                    infoFooter.current!.style.height = "90vh";
-                    let content=`
-                    <i class="iconfont icon-Arrow-Left2"></i>
-                    <div class="item detailed">
-                        <div class="targetName">名字</div>
-                        <div class="targetPhotos">
-                            图片
-                        </div>
-                        <div class="targetMore">
-                            <p class="targetLocation">地址：</p>
-                        </div>
-                    </div>
-                    <div class="content comment">
-                        <div class="header">
-                            <div class="targetTitle">用户评论</div>
-                            <div class="targetEdit">写评论</div>
-                        </div>
-                        <div class="targetMore">
-                            <div class="commentItem">
-                                <div class="userMsg">
-                                    <div class="avatar">
-                                        <img src="http://qyaps31kd.hn-bkt.clouddn.com/flag.png" alt="avatar" />
-                                    </div>
-                                    <div class="name">
-                                        姓名
-                                    </div>
-                                </div>
-                                <div class="commentMsg">
-                                    <div class="describe">
-                                        一大段评论
-                                    </div>
-                                    <div class="more">
-                                        <div class="time">
-                                            2021.9.01 14:00
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="commentItem">
-                                <div class="userMsg">
-                                    <div class="avatar">
-                                        <img src="http://qyaps31kd.hn-bkt.clouddn.com/flag.png" alt="avatar" />
-                                    </div>
-                                    <div class="name">
-                                        姓名
-                                    </div>
-                                </div>
-                                <div class="commentMsg">
-                                    <div class="describe">
-                                        一大段评论
-                                    </div>
-                                    <div class="more">
-                                        <div class="time">
-                                            2021.9.01 14:00
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="targetMore">
-                            <p class="targetLocation">地址：</p>
-                        </div>
-                    </div>
-                        `
-                    infoFooter.current!.innerHTML = content
+
                 }
             }
-            infoFooter.current!.onclick = close;
+
 
             async function markerClick(context: any) {
                 let myCenter: Ip = {
@@ -199,95 +146,233 @@ function Address(props: any) {
                     latitude: context.lnglat.lat
                 }
                 setCenter(myCenter);
-                let content = "";
                 try {
                     var { data: res } = await axios.post('http://localhost:8081/map/getTargetById', {
                         _id: context.target.targetId
                     });
                     let target = res.data[0];
+                    console.log(target)
                     setMyTarget({
-                        name:target.targetName,
-                        location: target.targetLocation
+                        ...myTarget,
+                        name: target.targetName,
+                        location: target.targetLocation,
+                        type: "click",
+                        comments: target.comments
                     })
-                    content = `
-                        <div class="content outline">
-                            <i class="iconfont icon-chahao"></i>
-                            <div class="targetName">${target.targetName}</div>
-                            <div class="targetMore">
-                                <p class="targetLocation">地址：${target.targetLocation}</p>
-                            </div>
-                        </div>
-                    `;
+
+
                 }
                 catch (error) {
                     console.log(error)
                 }
-                infoFooter.current!.innerHTML = content
                 // console.log(context)  //坐标1
                 // context.target.getPosition()  //2
             }
         }
     }
+    //关闭当前选中的target
+    function close(e:any) {
+        setMyTarget({
+            ...myTarget,
+            type: "default"
+        })
+        e.stopPropagation();
+    }
+    //展开当前target
+    function expand(){
+        setMyTarget({
+            ...myTarget,
+            type: "expanded"
+        })
+    }
+    //收起target
+    function retract(){
+        setMyTarget({
+            ...myTarget,
+            type: "click"
+        })
+    }
     useEffect(() => {
         console.log(props)
     })
-    /* 
-    //是根据state修改dom效率高还是直接在js里改效率高呢？
-    switch(footerState) {
-        case "click":
-            return (
-                <div className="mapContainer">
-            <Map version="1.4.16" events={sea} plugins={plugins} center={center} amapkey={mapKey}
-                zoom={15}>
-            </Map>
-            <div className="footer">
-                    <div className="infoFooter">
-                        <div className="content" ref={infoFooter}>
-                        <i className="iconfont icon-chahao"></i>
-                            <div className="targetName">{myTarget.name}</div>
-                            <div className="targetMore">
-                                <p className="targetLocation">地址：{myTarget.location}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="bottom">
-
-                    </div>
-                </div>
-            </div>
-                )
-        default:
-            return (
-                <div className="mapContainer">
-            <Map version="1.4.16" events={sea} plugins={plugins} center={center} amapkey={mapKey}
-                zoom={15}>
-            </Map>
-            <div className="footer">
-                    <div className="infoFooter">
-                        <div className="content" ref={infoFooter}>
-
-                        </div>
-                    </div>
-                    <div className="bottom">
-
-                    </div>
-                </div>
-            </div>
-            )
-    } */
+    useEffect(() => {
+    }, [myTarget])
     return (
         <div className="mapContainer">
             <Map version="1.4.16" events={sea} plugins={plugins} center={center} amapkey={mapKey}
                 zoom={15}>
             </Map>
-            <div className="footer" ref={footer}>
+            {   //写switch语句要用立即执行函数包裹
+                (() => {
+                    switch (myTarget.type) {
+                        case "expanded":
+                            return (
+                                <div className="footer expanded" >
+                                    <div className="top">
+                                        <div className="hearderPhoto">
+                                            <div className="vague">
+
+                                            </div>
+                                        </div>
+                                        <i className="iconfont icon-Arrow-Left2" onClick={retract}></i>
+                                        <div className="infoFooter">
+                                            <div className="item detailed">
+                                                <div className="targetName">{myTarget.name}</div>
+                                                <div className="flow">
+                                                    2条评论 15人来过
+                                                </div>
+                                                <div className="targetMore">
+                                                    <p className="targetLocation">地址：</p>
+                                                </div>
+                                            </div>
+                                            <div className="item comment">
+                                                <div className="header">
+                                                    <div className="targetTitle">用户评论</div>
+                                                    <div className="targetEdit">写评论</div>
+                                                </div>
+                                                <div className="targetMore">
+                                                    <div className="commentItem">
+                                                        <div className="userMsg">
+                                                            <div className="avatar">
+                                                                <img src="http://qyaps31kd.hn-bkt.clouddn.com/flag.png" alt="avatar" />
+                                                            </div>
+                                                            <div className="name">
+                                                                姓名
+                                                            </div>
+                                                        </div>
+                                                        <div className="commentMsg">
+                                                            <div className="describe">
+                                                                {myTarget.comments[0].comment}
+                                                            </div>
+                                                            <div className="more">
+                                                                <div className="time">
+                                                                    {myTarget.comments[0].createTime.split("T")[0]}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="commentItem">
+                                                        <div className="userMsg">
+                                                            <div className="avatar">
+                                                                <img src="http://qyaps31kd.hn-bkt.clouddn.com/flag.png" alt="avatar" />
+                                                            </div>
+                                                            <div className="name">
+                                                                姓名
+                                                            </div>
+                                                        </div>
+                                                        <div className="commentMsg">
+                                                            <div className="describe">
+                                                                一大段评论
+                                                            </div>
+                                                            <div className="more">
+                                                                <div className="time">
+                                                                    2021.9.01 14:00
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="item comment">
+                                                <div className="header">
+                                                    <div className="targetTitle">用户评论</div>
+                                                    <div className="targetEdit">写评论</div>
+                                                </div>
+                                                <div className="targetMore">
+                                                    <div className="commentItem">
+                                                        <div className="userMsg">
+                                                            <div className="avatar">
+                                                                <img src="http://qyaps31kd.hn-bkt.clouddn.com/flag.png" alt="avatar" />
+                                                            </div>
+                                                            <div className="name">
+                                                                姓名
+                                                            </div>
+                                                        </div>
+                                                        <div className="commentMsg">
+                                                            <div className="describe">
+                                                                一大段评论
+                                                            </div>
+                                                            <div className="more">
+                                                                <div className="time">
+                                                                    2021.9.01 14:00
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="commentItem">
+                                                        <div className="userMsg">
+                                                            <div className="avatar">
+                                                                <img src="http://qyaps31kd.hn-bkt.clouddn.com/flag.png" alt="avatar" />
+                                                            </div>
+                                                            <div className="name">
+                                                                姓名
+                                                            </div>
+                                                        </div>
+                                                        <div className="commentMsg">
+                                                            <div className="describe">
+                                                                一大段评论
+                                                            </div>
+                                                            <div className="more">
+                                                                <div className="time">
+                                                                    2021.9.01 14:00
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    </div>
+                                    <div className="bottom">
+
+                                    </div>
+                                </div>
+                            )
+                        case "click":
+                            return (
+                                <div className="footer" >
+                                    <div className="infoFooter">
+                                        <div className="content" ref={infoFooter} onClick={expand}>
+                                            <div className="content outline">
+                                                <i className="iconfont icon-chahao" onClick={(e) =>close(e)}></i>
+                                                <div className="targetName">{myTarget.name}</div>
+                                                <div className="targetMore">
+                                                    <p className="targetLocation">地址：{myTarget.location}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="bottom">
+
+                                    </div>
+                                </div>
+                            )
+                        default:
+                            return (
+                                <div className="footer">
+                                        <div className="infoFooter">
+                                            <div className="content" ref={infoFooter}>
+                                                <div className="content outline">
+                                                    默认
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <div className="bottom">
+
+                                    </div>
+                                </div>
+                            )
+                    }
+                })()
+            }
+            {/* <div className="footer" ref={footer}>
                     <div className="infoFooter" ref={infoFooter}>
                         
                     </div>
                     <div className="bottom">
 
                     </div>
-                </div>
+                </div> */}
         </div>
     )
 }

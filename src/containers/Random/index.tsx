@@ -31,7 +31,6 @@ function Random(props: Props) {
 
     function start() {
         if(!radoming){
-           
             if (!store.getState().location.ip || store.getState().location.ip === '') {
                 Toast.info('请先确定您的位置',1);
             } else if(store.getState().random.frequency >0){
@@ -55,7 +54,7 @@ function Random(props: Props) {
                 })
                 .then(function (response) {
                     if (response.data.pois.length === 0) {
-                        Toast.info('暂无数据',1000);
+                        Toast.info('暂无数据',1);
                         if(randomRef.current) randomRef.current!.className = "";
                         return false;
                     }
@@ -68,6 +67,21 @@ function Random(props: Props) {
                     }
                     setTimeout(() => {
                         console.log(randFood);
+                        let targetPhotos=randFood.photos.map((item:any) => {
+                            return{url:item.url}
+                        })
+                        
+                        axios.post("http://localhost:8081/map/addTarget",{
+                            ip:randFood.location,
+                            targetName: randFood.name,
+                            targetLocation: randFood.address,
+                            targetId: randFood.id,
+                            targetPhotos,
+                            userId:store.getState().user.msg._id
+                        }).then((res) =>{
+                        },(error) => {
+                            console.log(error)
+                        })
                         props.reducer();
                         props.set_target(randFood);
                         setIsRandom(true);
